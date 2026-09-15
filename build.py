@@ -67,7 +67,7 @@ SITE = {
     "home_headline": "记录那些真正搞明白的事。",
     "hero": "/hero.webp",                     # 首页配图；换成自己的图只需改这一行（放进 theme/ 即可）
     "hero_size": (760, 819),                   # 配图原始尺寸，写进 <img> 宽度高度防抖动
-    "recent": 8,                               # 首页「最近更新」条数
+    "recent": 10,                              # 首页「最近更新」条数
 }
 
 # 首页「最近在做」卡片（可留空）
@@ -100,17 +100,51 @@ THEME_HEAD = (
     "<script>(function(){try{var t=localStorage.getItem('%s');"
     "if(t==='dark'||t==='light'){document.documentElement.dataset.theme=t}}catch(e){}})();</script>" % THEME_KEY
 )
+# ── 界面图标（Feather / Lucide 图标集，MIT 许可）────────────────────────
+_ICON_ATTRS = (
+    'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"'
+)
+
+
+def icon(paths: str) -> str:
+    return f"<svg {_ICON_ATTRS}>{paths}</svg>"
+
+
+ICON_SUN = icon(
+    '<circle cx="12" cy="12" r="4"/>'
+    '<path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2'
+    'M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>'
+)
+ICON_MOON = icon('<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>')
+ICON_UP = icon('<path d="M12 19V5"/><path d="M5 12l7-7 7 7"/>')
+ICON_DOWN = icon('<path d="M12 5v14"/><path d="M19 12l-7 7-7-7"/>')
+
 THEME_TOGGLE = (
-    '<button class="theme-toggle" type="button" aria-label="切换日间/夜间模式" title="切换日间/夜间模式">'
-    '<span class="tt-sun" aria-hidden="true">☀</span><span class="tt-moon" aria-hidden="true">☾</span></button>'
+    '<button class="icon-btn theme-toggle" type="button" aria-label="切换日间/夜间模式" title="切换日间/夜间模式">'
+    f'<span class="tt-sun">{ICON_SUN}</span><span class="tt-moon">{ICON_MOON}</span></button>'
+)
+
+# 读文章时的浮动按钮：position: fixed，不随内容滚动而消失
+SCROLL_NAV = (
+    '<nav class="scroll-nav" aria-label="页面滚动">'
+    f'<button class="icon-btn" type="button" data-scroll="top" aria-label="回到最上面" title="回到最上面">{ICON_UP}</button>'
+    f'<button class="icon-btn" type="button" data-scroll="bottom" aria-label="跳到最下面" title="跳到最下面">{ICON_DOWN}</button>'
+    "</nav>"
 )
 THEME_SCRIPT = (
-    "<script>(function(){var b=document.querySelector('.theme-toggle');if(!b)return;"
-    "b.addEventListener('click',function(){var d=document.documentElement,c=d.dataset.theme;"
+    "<script>(function(){"
+    "var K='%s',b=document.querySelector('.theme-toggle');"
+    "function apply(n){document.documentElement.dataset.theme=n;"
+    "try{localStorage.setItem(K,n)}catch(e){}"
+    "b.setAttribute('title',n==='dark'?'切换到日间模式':'切换到夜间模式')}"
+    "if(b){b.addEventListener('click',function(){var c=document.documentElement.dataset.theme;"
     "if(c!=='dark'&&c!=='light'){c=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}"
-    "var n=c==='dark'?'light':'dark';d.dataset.theme=n;"
-    "try{localStorage.setItem('%s',n)}catch(e){}"
-    "b.setAttribute('title',n==='dark'?'切换到日间模式':'切换到夜间模式')})})();</script>" % THEME_KEY
+    "apply(c==='dark'?'light':'dark')})}"
+    "document.querySelectorAll('[data-scroll]').forEach(function(el){el.addEventListener('click',function(){"
+    "window.scrollTo({top:el.getAttribute('data-scroll')==='top'?0:document.documentElement.scrollHeight,"
+    "behavior:'smooth'})})});"
+    "})();</script>" % THEME_KEY
 )
 
 FRONT_MATTER_RE = re.compile(r"^---[ \t]*\r?\n(.*?)\r?\n---[ \t]*\r?\n?", re.S)
@@ -280,7 +314,7 @@ def load_notes() -> list[Note]:
 
 
 # ══════════════════════════ 页面模板 ══════════════════════════
-def shell(*, title: str, description: str, css: str, body: str, url: str = "/", kind: str = "website") -> str:
+def shell(*, title: str, description: str, css: str, body: str, url: str = "/", kind: str = "website", scroll: bool = False) -> str:
     full_title = SITE["title"] if title == SITE["title"] else f"{title} · {SITE['title']}"
     base = SITE["base_url"].rstrip("/")
     return f"""<!doctype html>
@@ -305,6 +339,7 @@ def shell(*, title: str, description: str, css: str, body: str, url: str = "/", 
 </head>
 <body>
 {body}
+{SCROLL_NAV if scroll else ""}
 {THEME_SCRIPT}
 </body>
 </html>
@@ -337,8 +372,8 @@ def page_home(notes: list[Note]) -> str:
     recent = notes[: int(SITE["recent"])]
     hero = SITE.get("hero")
     hw, hh = SITE.get("hero_size", (720, 720))
-    hero_html = (
-        f'<figure class="hero"><img src="{hero}" alt="" width="{hw}" height="{hh}"></figure>' if hero else ""
+    avatar_html = (
+        f'<figure class="avatar"><img src="{hero}" alt="" width="{hw}" height="{hh}"></figure>' if hero else ""
     )
     recent_html = "".join(
         f'<a class="recent-article-link" href="{n.url}">{html.escape(n.title)}</a>' for n in recent
@@ -370,23 +405,24 @@ def page_home(notes: list[Note]) -> str:
 
     body = f"""<main class="site">
 <aside class="article-nav" aria-label="网站导航">
-<div class="sidebar-top">{THEME_TOGGLE}</div>
 <nav aria-label="主导航">{"".join(f'<a href="{h}">{l}</a>' for l, h, _ in NAV)}</nav>
 <section class="recent-articles" aria-labelledby="recent-title">
 <h2 id="recent-title">最近更新</h2>
 {recent_html}
-<a class="more" href="/articles/">全部文章 →</a>
 </section>
 </aside>
-<div class="stage">
 {activity_html}
+<div class="black-world" aria-hidden="true"></div>
+<div class="home-toggle">{THEME_TOGGLE}</div>
 <section class="profile" aria-labelledby="profile-title">
-{hero_html}
+{avatar_html}
+<div class="profile-copy">
 <h1 id="profile-title">{html.escape(SITE["home_headline"])}</h1>
-<p class="tagline">{html.escape(SITE["tagline"])}</p>
+<p>{html.escape(SITE["tagline"])}</p>
 {socials_html}
-</section>
 </div>
+</section>
+<footer class="footer"><span>{html.escape(SITE["title"])}</span><span>POWERED BY NANO-BLOG</span></footer>
 </main>
 """
     return shell(title=SITE["title"], description=SITE["description"], css="/styles.css", body=body, url="/")
@@ -409,6 +445,7 @@ def page_articles(notes: list[Note]) -> str:
         css="/articles.css",
         body=body,
         url="/articles/",
+        scroll=True,
     )
 
 
@@ -447,7 +484,7 @@ def page_article(note: Note, older: Note | None, newer: Note | None) -> str:
 {footer()}
 </div>
 """
-    return shell(title=note.title, description=note.summary, css="/articles.css", body=body, url=note.url, kind="article")
+    return shell(title=note.title, description=note.summary, css="/articles.css", body=body, url=note.url, kind="article", scroll=True)
 
 
 def page_tags(tags: dict[str, list[Note]]) -> str:
@@ -466,7 +503,7 @@ def page_tags(tags: dict[str, list[Note]]) -> str:
 {footer()}
 </div>
 """
-    return shell(title="标签", description="全部标签", css="/articles.css", body=body, url="/tags/")
+    return shell(title="标签", description="全部标签", css="/articles.css", body=body, url="/tags/", scroll=True)
 
 
 def page_tag(tag: str, notes: list[Note]) -> str:
@@ -481,7 +518,7 @@ def page_tag(tag: str, notes: list[Note]) -> str:
 </div>
 """
     url = f"/tags/{urllib.parse.quote(tag)}/"
-    return shell(title=tag, description=f"标签「{tag}」下的文章", css="/articles.css", body=body, url=url)
+    return shell(title=tag, description=f"标签「{tag}」下的文章", css="/articles.css", body=body, url=url, scroll=True)
 
 
 def page_about() -> str:
@@ -498,7 +535,7 @@ def page_about() -> str:
 {footer()}
 </div>
 """
-    return shell(title="关于我", description=f"关于 {SITE['author']}", css="/articles.css", body=body, url="/about/")
+    return shell(title="关于我", description=f"关于 {SITE['author']}", css="/articles.css", body=body, url="/about/", scroll=True)
 
 
 def page_404() -> str:
