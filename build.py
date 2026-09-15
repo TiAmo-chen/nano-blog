@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import hashlib
 import html
 import re
 import shutil
@@ -314,6 +315,18 @@ def load_notes() -> list[Note]:
 
 
 # ══════════════════════════ 页面模板 ══════════════════════════
+def asset_version(rel: str) -> str:
+    """按文件内容生成短版本号，写在 <link>/<img> 后面避免浏览器/CF 用旧缓存。"""
+    p = THEME_DIR / rel.lstrip("/")
+    if not p.is_file():
+        return "0"
+    return hashlib.sha1(p.read_bytes()).hexdigest()[:8]
+
+
+def versioned(url: str) -> str:
+    return f"{url}?v={asset_version(url)}"
+
+
 def shell(*, title: str, description: str, css: str, body: str, url: str = "/", kind: str = "website", scroll: bool = False) -> str:
     full_title = SITE["title"] if title == SITE["title"] else f"{title} · {SITE['title']}"
     base = SITE["base_url"].rstrip("/")
@@ -326,7 +339,7 @@ def shell(*, title: str, description: str, css: str, body: str, url: str = "/", 
 <meta name="description" content="{html.escape(description)}">
 <meta name="author" content="{html.escape(SITE['author'])}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="{css}">
+<link rel="stylesheet" href="{versioned(css)}">
 <link rel="canonical" href="{base}{url}">
 <meta property="og:type" content="{kind}">
 <meta property="og:site_name" content="{html.escape(SITE['title'])}">
@@ -373,7 +386,7 @@ def page_home(notes: list[Note]) -> str:
     hero = SITE.get("hero")
     hw, hh = SITE.get("hero_size", (720, 720))
     avatar_html = (
-        f'<figure class="avatar"><img src="{hero}" alt="" width="{hw}" height="{hh}"></figure>' if hero else ""
+        f'<figure class="avatar"><img src="{versioned(hero)}" alt="" width="{hw}" height="{hh}"></figure>' if hero else ""
     )
     recent_html = "".join(
         f'<a class="recent-article-link" href="{n.url}">{html.escape(n.title)}</a>' for n in recent
