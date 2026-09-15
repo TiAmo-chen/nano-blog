@@ -56,9 +56,9 @@ slug: pi-system-prompt
 - 处理文件时清晰显示文件路径
 
 Pi 文档（仅当用户询问 pi 本身、其 SDK、扩展、主题、技能或 TUI 时阅读）：
-- 主文档：C:\Users\xuan.chen\AppData\Roaming\npm\node_modules\@agegr\pi-web\node_modules\@earendil-works\pi-coding-agent\README.md
-- 附加文档：C:\Users\xuan.chen\AppData\Roaming\npm\node_modules\@agegr\pi-web\node_modules\@earendil-works\pi-coding-agent\docs
-- 示例：C:\Users\xuan.chen\AppData\Roaming\npm\node_modules\@agegr\pi-web\node_modules\@earendil-works\pi-coding-agent\examples（扩展、自定义工具、SDK）
+- 主文档：C:\Users\me\AppData\Roaming\npm\node_modules\@agegr\pi-web\node_modules\@earendil-works\pi-coding-agent\README.md
+- 附加文档：C:\Users\me\AppData\Roaming\npm\node_modules\@agegr\pi-web\node_modules\@earendil-works\pi-coding-agent\docs
+- 示例：C:\Users\me\AppData\Roaming\npm\node_modules\@agegr\pi-web\node_modules\@earendil-works\pi-coding-agent\examples（扩展、自定义工具、SDK）
 - 阅读 pi 文档或示例时，在“附加文档”下解析 docs/...，在“示例”下解析 examples/...，而不是当前工作目录
 - 当被问及：扩展（docs/extensions.md、examples/extensions/）、主题（docs/themes.md）、技能（docs/skills.md）、提示模板（docs/prompt-templates.md）、TUI 组件（docs/tui.md）、键绑定（docs/keybindings.md）、SDK 集成（docs/sdk.md）、自定义提供程序（docs/custom-provider.md）、添加模型（docs/models.md）、pi 包（docs/packages.md）、环境变量（docs/environment-variables.md）时
 - 处理 pi 主题时，阅读文档和示例，并在实现之前遵循 .md 交叉引用
@@ -68,10 +68,10 @@ Pi 文档（仅当用户询问 pi 本身、其 SDK、扩展、主题、技能或
 
 项目特定的说明和指南：
 
-<project_instructions path="D:\code\AGENTS.md">
+<project_instructions path="AGENTS.md">
 <!-- 生成时间：2026-04-30 | 更新：2026-04-30 -->
 
-# D:\code - 个人开发工作区
+# <workspace> - 个人开发工作区
 
 ## 用途
 一个多领域开发工作区，包含嵌入式系统、机器学习、相机标定、Qt 应用程序和 Web 项目。按技术栈和项目领域组织。
@@ -178,46 +178,46 @@ Pi 文档（仅当用户询问 pi 本身、其 SDK、扩展、主题、技能或
   <skill>
     <name>autocli</name>
     <description>使用 autocli CLI 与 55+ 个社交/内容网站交互（HackerNews、Reddit、Twitter/X、Bilibili、知乎、微博、小红书、YouTube、Medium、Substack、豆瓣、微信读书、Linux-do、V2EX、Bloomberg、Google、Arxiv、Wikipedia、StackOverflow、Steam、Hugging Face、Apple Podcasts、小宇宙、BBC、新浪财经、DevTo、Lobsters、雪球、BOSS直聘、即刻、Facebook、Instagram、TikTok、LinkedIn、Reuters、什么值得买、携程、Coupang、Yahoo Finance、Barchart、Grok、Jimeng、Yollomi、超星、微信、豆包、Cursor、Codex、ChatWise、ChatGPT、Notion、Discord、Antigravity 等）通过用户的 Chrome 登录会话。对于支持的网站，始终优先使用 autocli 而非 playwright/浏览器自动化。当用户要求浏览、搜索、获取热门/趋势内容、发帖或阅读任何网站上的消息时触发；也可使用 'autocli read &lt;url&gt;' 将主要文章内容提取为 Markdown（对于 JS 渲染或需要登录的页面，优先于 WebFetch）。</description>
-    <location>C:\Users\xuan.chen\.pi\agent\skills\autocli-skill\SKILL.md</location>
+    <location>C:\Users\me\.pi\agent\skills\autocli-skill\SKILL.md</location>
   </skill>
   <skill>
     <name>bento-slides</name>
     <description>创建和编辑 Bento 演示文稿 — 单文件 .bento.html 幻灯片，其文档为 JSON 形式位于 “#bento-doc” 脚本块中。当用户需要幻灯片或演示文稿时使用：从零开始（它会自动从 bento.page 下载最新的 Bento 应用程序）、从源材料或改进现有的 .bento.html。将内容映射到正确的功能（图表、变形过渡、状态幻灯片、肯-伯恩斯效果、运动路径），而不是静态文本幻灯片，然后原地写入文档 JSON。完整架构 + 配方见 https://bento.page/agents.md。</description>
-    <location>C:\Users\xuan.chen\.pi\agent\skills\bento-slides\SKILL.md</location>
+    <location>C:\Users\me\.pi\agent\skills\bento-slides\SKILL.md</location>
   </skill>
   <skill>
     <name>council-mode</name>
     <description>运行有边界的、由监督者协调的顾问委员会。当用户要求委员会模式、召集顾问、辩论决策、交叉审查建议或运行 /council 时使用。</description>
-    <location>C:\Users\xuan.chen\.pi\agent\npm\node_modules\pi-subagents\skills\council-mode\SKILL.md</location>
+    <location>C:\Users\me\.pi\agent\npm\node_modules\pi-subagents\skills\council-mode\SKILL.md</location>
   </skill>
   <skill>
     <name>pi-subagents</name>
     <description>将工作委托给内置或自定义子智能体，支持单智能体、并行、脚本化链式、异步、分叉上下文和协调工作流。用于顾问审查、实施交接以及多步骤任务，其中单个智能体应保持控制，而其他智能体提供上下文、规划或执行。
 </description>
-    <location>C:\Users\xuan.chen\.pi\agent\npm\node_modules\pi-subagents\skills\pi-subagents\SKILL.md</location>
+    <location>C:\Users\me\.pi\agent\npm\node_modules\pi-subagents\skills\pi-subagents\SKILL.md</location>
   </skill>
   <skill>
     <name>mcp-scripting</name>
     <description>编写 mcpScript JavaScript，用于发现、检查和调用 MCP 工具。</description>
-    <location>C:\Users\xuan.chen\.pi\agent\npm\node_modules\pi-mcp-adapter\skills\mcp-scripting\SKILL.md</location>
+    <location>C:\Users\me\.pi\agent\npm\node_modules\pi-mcp-adapter\skills\mcp-scripting\SKILL.md</location>
   </skill>
   <skill>
     <name>plannotator</name>
     <description>使用 Plannotator CLI 的参考：计划审查、代码审查、注释文件、URL、文件夹和运行本地应用程序，注释上一条助手消息，浏览存档的计划决策，以及导出或分享引导式审查。当被要求使用 Plannotator 执行任何不属于更具体的 plannotator-* 技能范围的操作时调用。</description>
-    <location>C:\Users\xuan.chen\.pi\agent\npm\node_modules\@plannotator\pi-extension\skills\plannotator\SKILL.md</location>
+    <location>C:\Users\me\.pi\agent\npm\node_modules\@plannotator\pi-extension\skills\plannotator\SKILL.md</location>
   </skill>
   <skill>
     <name>workflow-authoring</name>
     <description>编写、编辑、审查和调试 pi-dynamic-workflows 的 JavaScript 工作流代码的指南。在编写或更改工作流脚本时使用；不仅用于运行现有工作流。</description>
-    <location>C:\Users\xuan.chen\.pi\agent\npm\node_modules\@quintinshaw\pi-dynamic-workflows\skills\workflow-authoring\SKILL.md</location>
+    <location>C:\Users\me\.pi\agent\npm\node_modules\@quintinshaw\pi-dynamic-workflows\skills\workflow-authoring\SKILL.md</location>
   </skill>
   <skill>
     <name>workflow-patterns</name>
     <description>5 种内置工作流模式的参数形式 — deep-research、adversarial-review、code-review、multi-perspective、codebase-audit — 可通过 `workflow` 工具的 `name` 输入运行，无需斜杠命令语法。适用于诸如 “研究 X”、“事实核查/对抗性审查这个”、“审查这个 diff/PR”、“从多个角度分析” 或 “审计代码库中的 Y” 的请求。不适用于编写新的工作流脚本 — 请参见 workflow-authoring。</description>
-    <location>C:\Users\xuan.chen\.pi\agent\npm\node_modules\@quintinshaw\pi-dynamic-workflows\skills\workflow-patterns\SKILL.md</location>
+    <location>C:\Users\me\.pi\agent\npm\node_modules\@quintinshaw\pi-dynamic-workflows\skills\workflow-patterns\SKILL.md</location>
   </skill>
 </available_skills>
-当前工作目录：D:/code/PI
+当前工作目录：<workspace>/PI
 
 # 操作浏览器
 

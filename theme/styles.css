@@ -134,6 +134,11 @@ a { color: inherit; text-decoration: none; }
 .timeline-item a { margin-top: 0.45rem; font-size: 0.82rem; color: var(--accent); }
 
 .profile { position: relative; max-width: 34rem; }
+.profile .hero {
+  margin: 0 0 2rem;
+  width: min(300px, 54vw);
+}
+.profile .hero img { display: block; width: 100%; height: auto; }
 .profile h1 {
   margin: 0;
   font-size: clamp(1.9rem, 4.6vw, 3.2rem);
@@ -176,4 +181,5 @@ a { color: inherit; text-decoration: none; }
   .article-nav nav a { font-size: 1.15rem; }
   .stage { align-items: flex-start; padding: 2rem 1.4rem 3.5rem; min-height: 60vh; }
   .activity { position: static; width: 100%; margin-bottom: 2rem; }
+  .profile .hero { width: min(220px, 62vw); margin-bottom: 1.5rem; }
 }

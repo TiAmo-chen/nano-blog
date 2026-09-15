@@ -352,6 +352,7 @@ def page_home(notes: list[Note]) -> str:
 <div class="stage">
 {activity_html}
 <section class="profile" aria-labelledby="profile-title">
+<figure class="hero"><img src="/hero.svg" alt="" width="720" height="720"></figure>
 <h1 id="profile-title">{html.escape(SITE["home_headline"])}</h1>
 <p class="tagline">{html.escape(SITE["tagline"])}</p>
 {socials_html}
