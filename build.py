@@ -59,11 +59,11 @@ OUT_DIR = ROOT / "public"
 
 # ───────────────────────────── 站点配置 ─────────────────────────────
 SITE = {
-    "title": "Qtech Notes",                    # 站点名（标题后缀 / og:site_name）
+    "title": "橙心",                           # 站点名（标题后缀 / og:site_name）
     "tagline": "WORKLOG / NOTES / TECH",       # 首页与页脚口号
-    "description": "工作记录与技术笔记",         # 默认 meta description
-    "author": "xuan.chen",
-    "base_url": "https://example.com",         # ← 部署后改成自己的域名（sitemap / og:url）
+    "description": "嵌入式 / 图像算法 / AI 的工作与学习笔记",   # 默认 meta description
+    "author": "橙心",
+    "base_url": "https://orangeheart.top",      # ← 部署后改成自己的域名（sitemap / og:url）
     "home_headline": "记录那些真正搞明白的事。",
     "recent": 8,                               # 首页「最近更新」条数
 }
@@ -602,7 +602,14 @@ def main() -> int:
     articles_css += "\n" + pygments_css(".prose .language-python")
     write("articles.css", articles_css)
     for asset in THEME_DIR.iterdir():
-        if asset.suffix in {".svg", ".png", ".webp", ".ico", ".jpg", ".woff2"}:
+        if asset.is_dir():  # 主题子目录整体拷贝（如 theme/image/**）
+            for f in asset.rglob("*"):
+                if f.is_file():
+                    dest = OUT_DIR / f.relative_to(THEME_DIR)
+                    dest.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(f, dest)
+                    WRITTEN.add(dest.resolve())
+        elif asset.suffix in {".svg", ".png", ".webp", ".ico", ".jpg", ".woff2"} or asset.name == "CNAME":
             copy_asset(asset)
 
     stale = prune()
