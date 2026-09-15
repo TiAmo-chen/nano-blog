@@ -17,7 +17,7 @@
   --measure: 46rem;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #0d0d10;
     --fg: #e9e9ec;
     --muted: #9a9aa3;
@@ -26,6 +26,16 @@
     --code-bg: #14141a;
     --accent: #f87171;
   }
+}
+/* 手动切换优先于系统偏好 */
+:root[data-theme="dark"] {
+  --bg: #0d0d10;
+  --fg: #e9e9ec;
+  --muted: #9a9aa3;
+  --line: #26262c;
+  --soft: #15151a;
+  --code-bg: #14141a;
+  --accent: #f87171;
 }
 
 * { box-sizing: border-box; }
@@ -55,6 +65,10 @@ a { color: inherit; }
 
 /* ---------- 顶部导航 ---------- */
 .compact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
   padding: 1.6rem 0 2.4rem;
 }
 .compact nav { display: flex; flex-wrap: wrap; gap: 1.15rem; }
@@ -66,6 +80,33 @@ a { color: inherit; }
 }
 .compact nav a:hover { color: var(--fg); }
 .compact nav a[aria-current="page"] { color: var(--fg); font-weight: 600; }
+
+/* ---------- 深/浅色切换按钮 ---------- */
+.theme-toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.theme-toggle:hover { color: var(--fg); border-color: color-mix(in srgb, var(--fg) 35%, transparent); }
+.theme-toggle .tt-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .tt-sun { display: inline; }
+:root[data-theme="dark"] .theme-toggle .tt-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .tt-sun { display: inline; }
+  :root:not([data-theme="light"]) .theme-toggle .tt-moon { display: none; }
+}
 
 /* ---------- 通用标题 ---------- */
 h1 {

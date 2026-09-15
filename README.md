@@ -1,12 +1,13 @@
 # nano-blog
 
-一个**零 JavaScript 运行时**的极简静态博客生成器 —— 架构对齐 <https://nano-ai.tech/>。
+一个**几乎零 JavaScript** 的极简静态博客生成器 —— 架构参考 <https://nano-ai.tech/>。
 
 ```
 Markdown  →  markdown-it-py (GFM)  →  Pygments(nowrap)  →  纯静态 HTML + 2 个 CSS
 ```
 
 - 没有前端框架、没有打包器、没有数据库、没有服务端
+- 全站 JS 只有主题切换的一小段内联脚本（约 20 行），没有外部脚本文件
 - 代码高亮是构建期完成的（Pygments 短类名，和参考站同一套做法）
 - 产出物只有 HTML / CSS / SVG，可以直接丢给任何静态托管（EdgeOne Pages、Cloudflare Pages、Vercel、GitHub Pages…）
 - 附带 `sitemap.xml` / `robots.txt` / `feed.xml` / `404.html` / OG 标签（参考站这几项是缺的）
@@ -98,4 +99,11 @@ python tools/import_note.py "D:\Obsidian\...\2026-09-10.md" \
 ## 两种可选改进
 
 - 装上 `linkify-it-py`，正文里的裸链接会自动变成 `<a>`。
-- 深色模式已内置（`prefers-color-scheme`），代码高亮会跟着切到 `github-dark`。
+- 深色模式已内置：默认跟随系统，右上角/顶栏的按钮可手动切换，选择记在 `localStorage`。
+
+## 致谢
+
+- 站点形态与首页布局参考了 [nano-ai.tech](https://nano-ai.tech/)（Hexo 转向自建静态站、单色排版、首页侧栏 + 大字标语的结构），生成器与样式均为本项目原创实现，未使用对方任何素材。
+- 渲染管线依赖：[markdown-it-py](https://github.com/executablebooks/markdown-it-py)、[Pygments](https://pygments.org/)。
+- 托管：[GitHub Pages](https://pages.github.com/) + [Cloudflare](https://www.cloudflare.com/)。
+- 首页配图：`theme/hero.svg`（原创 SVG）；如果想换成你自己的 3D 头像，把图片放进 `theme/` 并在 `build.py` 里改 `page_home()` 的 `<img src>` 即可。

@@ -92,6 +92,25 @@ PYGMENTS_DARK = "github-dark"
 
 NAV = [("首页", "/", "home"), ("文章", "/articles/", "articles"), ("标签", "/tags/", "tags"), ("关于我", "/about/", "about")]
 
+# ── 深/浅色切换（全站唯一的一小段内联 JS，约 20 行）────────────────────
+THEME_KEY = "nano-blog-theme"
+THEME_HEAD = (
+    "<script>(function(){try{var t=localStorage.getItem('%s');"
+    "if(t==='dark'||t==='light'){document.documentElement.dataset.theme=t}}catch(e){}})();</script>" % THEME_KEY
+)
+THEME_TOGGLE = (
+    '<button class="theme-toggle" type="button" aria-label="切换日间/夜间模式" title="切换日间/夜间模式">'
+    '<span class="tt-sun" aria-hidden="true">☀</span><span class="tt-moon" aria-hidden="true">☾</span></button>'
+)
+THEME_SCRIPT = (
+    "<script>(function(){var b=document.querySelector('.theme-toggle');if(!b)return;"
+    "b.addEventListener('click',function(){var d=document.documentElement,c=d.dataset.theme;"
+    "if(c!=='dark'&&c!=='light'){c=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}"
+    "var n=c==='dark'?'light':'dark';d.dataset.theme=n;"
+    "try{localStorage.setItem('%s',n)}catch(e){}"
+    "b.setAttribute('title',n==='dark'?'切换到日间模式':'切换到夜间模式')})})();</script>" % THEME_KEY
+)
+
 FRONT_MATTER_RE = re.compile(r"^---[ \t]*\r?\n(.*?)\r?\n---[ \t]*\r?\n?", re.S)
 DATE_IN_NAME_RE = re.compile(r"(\d{4})-(\d{2})-(\d{2})")
 
@@ -280,9 +299,11 @@ def shell(*, title: str, description: str, css: str, body: str, url: str = "/", 
 <meta property="og:url" content="{base}{url}">
 <meta name="twitter:card" content="summary">
 <meta name="generator" content="nano-blog · markdown-it-py + Pygments">
+{THEME_HEAD}
 </head>
 <body>
 {body}
+{THEME_SCRIPT}
 </body>
 </html>
 """
@@ -293,7 +314,7 @@ def compact_header(current: str) -> str:
     for label, href, key in NAV:
         cur = ' aria-current="page"' if key == current else ""
         links.append(f'<a href="{href}"{cur}>{label}</a>')
-    return f'<header class="compact"><nav aria-label="主导航">{"".join(links)}</nav></header>'
+    return f'<header class="compact"><nav aria-label="主导航">{"".join(links)}</nav>{THEME_TOGGLE}</header>'
 
 
 def footer() -> str:
@@ -342,6 +363,7 @@ def page_home(notes: list[Note]) -> str:
 
     body = f"""<main class="site">
 <aside class="article-nav" aria-label="网站导航">
+<div class="sidebar-top">{THEME_TOGGLE}</div>
 <nav aria-label="主导航">{"".join(f'<a href="{h}">{l}</a>' for l, h, _ in NAV)}</nav>
 <section class="recent-articles" aria-labelledby="recent-title">
 <h2 id="recent-title">最近更新</h2>
