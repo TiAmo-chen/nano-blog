@@ -316,11 +316,15 @@ def load_notes() -> list[Note]:
 
 # ══════════════════════════ 页面模板 ══════════════════════════
 def asset_version(rel: str) -> str:
-    """按文件内容生成短版本号，写在 <link>/<img> 后面避免浏览器/CF 用旧缓存。"""
+    """按文件内容生成短版本号，写在 <link>/<img> 后面避免浏览器/CF 用旧缓存。
+
+    先把 CRLF 归一成 LF 再算，这样 Windows 本地构建与 Linux CI 构建得到同一个版本号。
+    """
     p = THEME_DIR / rel.lstrip("/")
     if not p.is_file():
         return "0"
-    return hashlib.sha1(p.read_bytes()).hexdigest()[:8]
+    data = p.read_bytes().replace(b"\r\n", b"\n")
+    return hashlib.sha1(data).hexdigest()[:8]
 
 
 def versioned(url: str) -> str:
