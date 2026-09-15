@@ -1,0 +1,233 @@
+/* ============================================================
+   内容页样式（/articles.css）：文章列表 / 文章 / 标签 / 关于
+   Pygments 代码配色由 build.py 追加在文件末尾
+   ============================================================ */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --fg: #16161a;
+  --muted: #71717a;
+  --line: #e6e6e9;
+  --soft: #f6f6f8;
+  --code-bg: #f7f8fa;
+  --accent: #b91c1c;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", monospace;
+  --measure: 46rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d0d10;
+    --fg: #e9e9ec;
+    --muted: #9a9aa3;
+    --line: #26262c;
+    --soft: #15151a;
+    --code-bg: #14141a;
+    --accent: #f87171;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 16.5px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+.site {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.site > main { flex: 1; }
+
+/* ---------- 顶部导航 ---------- */
+.compact {
+  padding: 1.6rem 0 2.4rem;
+}
+.compact nav { display: flex; flex-wrap: wrap; gap: 1.15rem; }
+.compact nav a {
+  font-size: 0.86rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.compact nav a:hover { color: var(--fg); }
+.compact nav a[aria-current="page"] { color: var(--fg); font-weight: 600; }
+
+/* ---------- 通用标题 ---------- */
+h1 {
+  margin: 0 0 0.4rem;
+  font-size: clamp(1.5rem, 3.4vw, 2rem);
+  font-weight: 750;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+.muted { margin: 0 0 1.6rem; color: var(--muted); font-size: 0.86rem; }
+
+/* ---------- 文章列表 ---------- */
+.post-list { margin: 0; padding: 0; list-style: none; }
+.post-list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.2rem;
+  padding: 0.78rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.post-title { font-size: 1rem; line-height: 1.5; }
+.post-title:hover { color: var(--accent); }
+.post-date { flex: none; font-size: 0.78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* ---------- 文章头 ---------- */
+.article-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--line);
+}
+.article-header h1 { margin-bottom: 0.7rem; }
+.article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.article-meta .dot { opacity: 0.5; }
+.tag {
+  font-size: 0.74rem;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 1px 9px;
+  text-decoration: none;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.tag:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
+
+/* ---------- 正文排版 ---------- */
+.prose { font-size: 1rem; line-height: 1.9; }
+.prose > *:first-child { margin-top: 0; }
+.prose p { margin: 1.05em 0; }
+.prose h2 { margin: 2.3em 0 0.7em; font-size: 1.28rem; line-height: 1.4; letter-spacing: -0.01em; }
+.prose h3 { margin: 1.9em 0 0.6em; font-size: 1.1rem; line-height: 1.4; }
+.prose h4 { margin: 1.6em 0 0.5em; font-size: 1rem; color: var(--muted); }
+.prose strong { font-weight: 650; }
+.prose a { color: var(--accent); text-underline-offset: 0.2em; text-decoration: underline; text-decoration-thickness: 1px; }
+.prose hr { border: 0; border-top: 1px solid var(--line); margin: 2.4em 0; }
+.prose ul, .prose ol { margin: 1em 0; padding-left: 1.35em; }
+.prose li { margin: 0.4em 0; }
+.prose li > ul, .prose li > ol { margin: 0.4em 0; }
+.prose img { max-width: 100%; height: auto; border-radius: 8px; }
+.prose blockquote {
+  margin: 1.4em 0;
+  padding: 0.1em 0 0.1em 1.05em;
+  border-left: 3px solid var(--line);
+  color: var(--muted);
+}
+.prose blockquote p { margin: 0.5em 0; }
+
+/* 行内代码 */
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+  white-space: nowrap;
+}
+/* 代码块 */
+.prose pre {
+  margin: 1.5em 0;
+  padding: 0.95rem 1.05rem;
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow-x: auto;
+  font-size: 0.855rem;
+  line-height: 1.62;
+  tab-size: 4;
+}
+.prose pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+  white-space: pre;
+}
+
+/* 表格 */
+.prose table {
+  width: 100%;
+  margin: 1.5em 0;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+.prose th, .prose td {
+  border: 1px solid var(--line);
+  padding: 0.5em 0.75em;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.6;
+}
+.prose thead th { background: var(--soft); font-weight: 650; }
+.prose tbody tr:nth-child(even) { background: color-mix(in srgb, var(--soft) 55%, transparent); }
+
+/* ---------- 上一篇 / 下一篇 ---------- */
+.post-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.9rem;
+  margin-top: 3rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+}
+.post-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+.post-nav-link:hover { border-color: color-mix(in srgb, var(--fg) 35%, transparent); }
+.post-nav-link span { font-size: 0.72rem; color: var(--muted); }
+.post-nav-link strong { font-size: 0.9rem; font-weight: 550; line-height: 1.45; }
+.post-nav-link.next { text-align: right; }
+
+/* ---------- 页脚 ---------- */
+footer {
+  margin-top: 3.5rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+@media (max-width: 620px) {
+  body { font-size: 16px; }
+  .site { padding: 0 1.15rem 3rem; }
+  .post-list li { flex-direction: column; gap: 0.2rem; }
+  .prose pre { font-size: 0.8rem; }
+}

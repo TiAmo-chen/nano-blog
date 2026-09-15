@@ -1,0 +1,6 @@
+# 运行时依赖
+markdown-it-py>=3.0
+Pygments>=2.15
+
+# 可选：让正文里的裸链接自动变成 <a>（装上后 build.py 自动启用）
+# linkify-it-py>=2.0

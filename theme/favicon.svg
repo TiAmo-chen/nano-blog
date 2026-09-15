@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="nano-blog">
+  <rect width="64" height="64" rx="14" fill="#111114"/>
+  <path d="M19 45V19h5.9l12.4 16.2V19H44v26h-5.9L25.7 28.8V45z" fill="#fff"/>
+</svg>
