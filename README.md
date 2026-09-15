@@ -103,7 +103,7 @@ python tools/import_note.py "D:\Obsidian\...\2026-09-10.md" \
 
 ## 致谢
 
-- 站点形态与首页布局参考了 [nano-ai.tech](https://nano-ai.tech/)（Hexo 转向自建静态站、单色排版、首页侧栏 + 大字标语的结构），生成器与样式均为本项目原创实现，未使用对方任何素材。
+- 站点形态与首页布局参考了 [nano-ai.tech](https://nano-ai.tech/)（Hexo 转向自建静态站、单色排版、首页侧栏 + 大字标语的结构），生成器与样式均为本项目原创实现。
 - 渲染管线依赖：[markdown-it-py](https://github.com/executablebooks/markdown-it-py)、[Pygments](https://pygments.org/)。
 - 托管：[GitHub Pages](https://pages.github.com/) + [Cloudflare](https://www.cloudflare.com/)。
-- 首页配图：`theme/hero.svg`（原创 SVG）；如果想换成你自己的 3D 头像，把图片放进 `theme/` 并在 `build.py` 里改 `page_home()` 的 `<img src>` 即可。
+- 首页配图 `theme/hero.webp`：取自 [nano-ai.tech](https://nano-ai.tech/) 的原站素材（版权归原作者），仅作临时占位，已重新裁剪压缩（1900 KB → 119 KB）。若要长期使用请换成自己的图：把图片放进 `theme/`，再改 `build.py` 里的 `SITE["hero"]` 和 `SITE["hero_size"]` 即可。

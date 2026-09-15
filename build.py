@@ -65,7 +65,8 @@ SITE = {
     "author": "橙心",
     "base_url": "https://orangeheart.top",      # ← 部署后改成自己的域名（sitemap / og:url）
     "home_headline": "记录那些真正搞明白的事。",
-    "hero": "/hero.svg",                      # 首页配图；换成自己的图只需改这一行（放进 theme/ 即可）
+    "hero": "/hero.webp",                     # 首页配图；换成自己的图只需改这一行（放进 theme/ 即可）
+    "hero_size": (760, 819),                   # 配图原始尺寸，写进 <img> 宽度高度防抖动
     "recent": 8,                               # 首页「最近更新」条数
 }
 
@@ -335,8 +336,9 @@ def post_list(notes: list[Note]) -> str:
 def page_home(notes: list[Note]) -> str:
     recent = notes[: int(SITE["recent"])]
     hero = SITE.get("hero")
+    hw, hh = SITE.get("hero_size", (720, 720))
     hero_html = (
-        f'<figure class="hero"><img src="{hero}" alt="" width="720" height="720"></figure>' if hero else ""
+        f'<figure class="hero"><img src="{hero}" alt="" width="{hw}" height="{hh}"></figure>' if hero else ""
     )
     recent_html = "".join(
         f'<a class="recent-article-link" href="{n.url}">{html.escape(n.title)}</a>' for n in recent

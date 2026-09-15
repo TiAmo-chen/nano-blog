@@ -172,9 +172,16 @@ a { color: inherit; text-decoration: none; }
 .profile { position: relative; max-width: 34rem; }
 .profile .hero {
   margin: 0 0 2rem;
-  width: min(300px, 54vw);
+  width: min(330px, 58vw);
 }
-.profile .hero img { display: block; width: 100%; height: auto; }
+.profile .hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* 半身像底部柔化，避免出现生硬的水平截断 */
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+}
 .profile h1 {
   margin: 0;
   font-size: clamp(1.9rem, 4.6vw, 3.2rem);
@@ -217,5 +224,5 @@ a { color: inherit; text-decoration: none; }
   .article-nav nav a { font-size: 1.15rem; }
   .stage { align-items: flex-start; padding: 2rem 1.4rem 3.5rem; min-height: 60vh; }
   .activity { position: static; width: 100%; margin-bottom: 2rem; }
-  .profile .hero { width: min(220px, 62vw); margin-bottom: 1.5rem; }
+  .profile .hero { width: min(230px, 64vw); margin-bottom: 1.5rem; }
 }
